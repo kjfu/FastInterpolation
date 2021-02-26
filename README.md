@@ -7,8 +7,8 @@ Suggest you have test.mesh and test.value as original tetrahedral mesh with valu
 ```
 >> FastInterpolation ./test -iv ./vertices -o ./rst
 ```
-choose -iv for to interpolating for vetices 
-All input should with no postfix
+choose -iv for to interpolating for vetices.   
+All input should with no postfix!  
 After running you can get rst.value for all the values interpolating from the original tetrahedral mesh. 
 ##  2. To interpolating for mesh
 Suggest you have test3d.mesh and test3d.value as original tetrahedral mesh with values, the other mesh you want to interpolate is in otherMesh.mesh, you can input as below:
@@ -16,6 +16,6 @@ Suggest you have test3d.mesh and test3d.value as original tetrahedral mesh with 
 ```
 >> FastInterpolation ./test3d -im ./otherMesh -o ./rst
 ```
-choose -im for to interpolating for other mesh 
-All input should with no postfix
+choose -im for to interpolating for other mesh.  
+All input should with no postfix!  
 After running you can get rst.value for all the values interpolating from the original tetrahedral mesh. 
