@@ -1,7 +1,7 @@
 #pragma once
 #include<vector>
 #include"vector3d.h"
-
+#include<string>
 
 
 void loadXYZ(std::string filePath, std::vector<Vector3D> &pos);
