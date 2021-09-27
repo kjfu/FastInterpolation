@@ -139,7 +139,7 @@ bool Mesh::searchTetrahedronContain(Vector3D pos,  Tetrahedron* &goalTet, std::a
     kdres *set = kd_nearest_range(tetKDTree, pos.data(), maxSizing);
     while (!kd_res_end(set)){
         Tetrahedron *tet = static_cast<Tetrahedron *>(kd_res_item_data(set));
-        if (tet->boundingBox.contain(pos) && tet->contain(pos, weights)){
+        if (tet->boundingBox.contain(pos, minSizing*0.001) && tet->contain(pos, weights, minSizing*0.001)){
             goalTet = tet;
             rst = true;
             break;
@@ -147,6 +147,7 @@ bool Mesh::searchTetrahedronContain(Vector3D pos,  Tetrahedron* &goalTet, std::a
         kd_res_next(set);
     }
     kd_res_free(set);
+
     return rst;  
 
     // bool findGoal = false;
@@ -211,8 +212,11 @@ void Mesh::loadNodeValues(const std::string &filePath){
             lineStream >> keyString;
             if(keyString == "scalar"){
                 std::string name;
+                int nv;
                 lineStream >> name;
                 scalarValueNames.push_back(name);
+                std::getline(file, line);
+
                 for(int i=0; i<nodes.size(); i++){
                     std::string line;
                     std::getline(file, line);
@@ -226,6 +230,7 @@ void Mesh::loadNodeValues(const std::string &filePath){
                 std::string name;
                 lineStream >> name;
                 vectorValueNames.push_back(name);
+                std::getline(file, line);
                 for(int i=0; i<nodes.size(); i++){
                     std::string line;
                     std::getline(file, line);
@@ -447,10 +452,24 @@ void Mesh::interpolateNodeValues(std::vector<Vector3D> &positions, std::vector<s
             std::vector<double> scals;
             std::vector<Vector3D> vecs;
             goalTet->interpolateNodeValue(weights, scals, vecs);
-            scalars[i] = scals;
-            vectors[i] = vecs;
 
+            scalars[i]=scals;
+        
+
+            vectors[i]=vecs;
+
+            
+        }
+        else{
+            for(int j=0; j<nodes[0]->scalarValues.size(); j++){
+                scalars[i].push_back(9999999);
+            }
+            Vector3D vec(9999999, 9999999, 9999999);
+            for(int j=0; j<nodes[0]->vectorValues.size(); j++){
+                vectors[i].push_back(vec);
+            }
         }
         
     }
+    
 }

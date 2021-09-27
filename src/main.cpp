@@ -1,3 +1,11 @@
+/*
+ * @Author: Kejie Fu
+ * @Date: 2021-09-27 19:41:31
+ * @LastEditTime: 2021-09-27 22:18:43
+ * @LastEditors: Kejie Fu
+ * @Description: 
+ * @FilePath: /FastInterpolation/src/main.cpp
+ */
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -31,13 +39,16 @@ int main(int argc, char *argv[]){
 
     }
 
+    // choice = 1;
+    // inputName = "/home/kjfu/research/FastInterpolation/examples/bugCase/test";
+    // backgroundName = "/home/kjfu/research/FastInterpolation/examples/bugCase/disloc2dout";
     if(choice<0){
         std::cout << "*Invalid Input*: Choose -iv to interpolating for vetices or -im to interpolating for mesh\n";
         return 0;
     }
 
     if (inputName.empty()){
-        std::cout << "*Invalid Input*: Input the input file path with out any postfix\n";
+        std::cout << "*Invalid Input*: Input the input file path without any postfix\n";
         return 0;
     }
     if (backgroundName.empty()){
@@ -57,9 +68,11 @@ int main(int argc, char *argv[]){
     if (choice==1){
         std::vector<Vector3D> pos;
         loadXYZ(inputName+".xyz", pos);
-        std::vector<std::vector<double>> scalars;
-        std::vector<std::vector<Vector3D>> vectors;
+        std::vector<std::vector<double>> scalars(pos.size());
+        std::vector<std::vector<Vector3D>> vectors(pos.size());
+        
         backgroundMesh.interpolateNodeValues(pos, scalars, vectors);
+
         exportNodeValues(scalars, vectors, backgroundMesh.scalarValueNames, backgroundMesh.vectorValueNames, outputName+".value");
     }
     else if(choice==2){

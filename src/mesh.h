@@ -174,7 +174,7 @@ public:
         return rst;        
     }
 
-    bool contain(Vector3D pos, std::array<double, 4> &weights){
+    bool contain(Vector3D pos, std::array<double, 4> &weights, double eps=std::numeric_limits<double>::epsilon()) {
         static int nodeIndices[4][3]=
         { {1, 3, 2}
         , {0, 2, 3}
@@ -183,9 +183,12 @@ public:
         bool rst = true;
         for(int i=0; i<4; i++){
             double weight = SixTimesTetrahedronVolume(nodes[nodeIndices[i][0]]->pos, nodes[nodeIndices[i][1]]->pos, nodes[nodeIndices[i][2]]->pos, pos);
-            if (weight<-std::numeric_limits<double>::epsilon()){
+            if (weight<-eps){
                 rst = false;
                 break;
+            }
+            else if (weight>=-eps && weight<0) {
+                weights[i] = 0;
             }
             else{
                 weights[i] = weight;
